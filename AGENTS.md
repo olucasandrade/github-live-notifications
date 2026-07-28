@@ -27,3 +27,12 @@ Exit 0 means done. CI runs the same script on every PR — passing locally past 
 - Issues are the queue. An issue labeled `agent:ready` has survived a grilling session and carries acceptance criteria; execute those decisions, don't remake them. If a decision is missing, stop and say so instead of guessing.
 - One issue, one branch (`agent/issue-<N>`), one PR with `Closes #N`. Keep issues small: read only the paths listed under **Scope** in the issue body.
 - Anything mechanical you solve (setup, codegen, migrations, release steps) gets saved as `scripts/*.sh` and referenced here. Re-running a script is free; re-deriving costs tokens.
+
+## Project facts
+
+- Spec: `docs/PLAN.md` (locked product decisions). UI: `docs/UI-SPEC.md` (follow for all SwiftUI work).
+- Core logic lives in SPM package `GHNCore` (`Package.swift`). App target is separate under `GitHubLiveNotifications/`.
+- macOS 13+, Swift 5.9, async/await only (no Combine unless a system API forces it).
+- Never log PATs, `Authorization` headers, or notification bodies. Redact `ghp_` / `gho_` / `github_pat_` in debug export.
+- Bundle ID: `com.lucasandrade.GitHubLiveNotifications`. Keychain service: `com.lucasandrade.GitHubLiveNotifications.pat`.
+- Local machines may lack Xcode.app; `scripts/xcode-check.sh` skips `xcodebuild` locally but CI on `macos-14` must run it once the `.xcodeproj` exists.

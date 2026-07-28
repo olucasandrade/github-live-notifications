@@ -1,5 +1,9 @@
 .DS_Store
-node_modules/
-target/
-dist/
 .env
+*.xcuserstate
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
