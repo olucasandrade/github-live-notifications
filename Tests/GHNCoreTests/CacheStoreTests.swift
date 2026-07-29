@@ -147,11 +147,13 @@ final class CacheStoreTests: XCTestCase {
     func testWipeRepoClearsItemIDsAndStarCount() {
         store.recordItemIDs(["1", "2"], forRepo: repoA)
         store.recordStarCount(42, forRepo: repoA)
+        store.markItemsBaselined(forRepo: repoA)
 
         store.wipeRepo(repoA)
 
         XCTAssertEqual(store.itemIDs(forRepo: repoA), [])
         XCTAssertNil(store.starCount(forRepo: repoA))
+        XCTAssertFalse(store.itemsBaselined(forRepo: repoA))
     }
 
     func testWipeRepoLeavesOtherReposAndGlobalStateIntact() {
@@ -173,14 +175,18 @@ final class CacheStoreTests: XCTestCase {
 
     func testWipeAllClearsEverything() {
         store.recordThreadIDs(["t1"])
+        store.markThreadsBaselined()
         store.recordItemIDs(["1"], forRepo: repoA)
+        store.markItemsBaselined(forRepo: repoA)
         store.recordStarCount(42, forRepo: repoA)
         store.recordETag(#""e""#, forKey: "notifications")
 
         store.wipeAll()
 
         XCTAssertEqual(store.threadIDs, [])
+        XCTAssertFalse(store.threadsBaselined)
         XCTAssertEqual(store.itemIDs(forRepo: repoA), [])
+        XCTAssertFalse(store.itemsBaselined(forRepo: repoA))
         XCTAssertNil(store.starCount(forRepo: repoA))
         XCTAssertNil(store.etag(forKey: "notifications"))
     }

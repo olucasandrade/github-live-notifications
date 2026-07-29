@@ -29,6 +29,14 @@ public protocol CacheStore: AnyObject {
     /// Records (or clears, when nil) the ETag for a request key.
     func recordETag(_ etag: String?, forKey key: String)
 
+    /// Whether notification threads have completed a silent baseline fetch.
+    var threadsBaselined: Bool { get }
+    func markThreadsBaselined()
+
+    /// Whether PR/issue IDs for a repo have completed a silent baseline fetch.
+    func itemsBaselined(forRepo repo: MonitoredRepo) -> Bool
+    func markItemsBaselined(forRepo repo: MonitoredRepo)
+
     /// Wipes all per-repo state (item IDs, star count) — repo unselected.
     func wipeRepo(_ repo: MonitoredRepo)
     /// Wipes the entire cache — sign-out.
@@ -53,7 +61,9 @@ public final class UserDefaultsCacheStore: CacheStore {
     private enum Key {
         static let prefix = "cache."
         static let threadIDs = prefix + "threadIDs"
+        static let threadsBaselined = prefix + "threadsBaselined"
         static func itemIDs(_ repo: MonitoredRepo) -> String { prefix + "itemIDs." + repo.fullName }
+        static func itemsBaselined(_ repo: MonitoredRepo) -> String { prefix + "itemsBaselined." + repo.fullName }
         static func starCount(_ repo: MonitoredRepo) -> String { prefix + "starCount." + repo.fullName }
         static func etag(_ key: String) -> String { prefix + "etag." + key }
     }
@@ -100,11 +110,30 @@ public final class UserDefaultsCacheStore: CacheStore {
         defaults.set(etag, forKey: Key.etag(key))
     }
 
+    // MARK: Baseline flags
+
+    public var threadsBaselined: Bool {
+        defaults.bool(forKey: Key.threadsBaselined)
+    }
+
+    public func markThreadsBaselined() {
+        defaults.set(true, forKey: Key.threadsBaselined)
+    }
+
+    public func itemsBaselined(forRepo repo: MonitoredRepo) -> Bool {
+        defaults.bool(forKey: Key.itemsBaselined(repo))
+    }
+
+    public func markItemsBaselined(forRepo repo: MonitoredRepo) {
+        defaults.set(true, forKey: Key.itemsBaselined(repo))
+    }
+
     // MARK: Wipe
 
     public func wipeRepo(_ repo: MonitoredRepo) {
         defaults.removeObject(forKey: Key.itemIDs(repo))
         defaults.removeObject(forKey: Key.starCount(repo))
+        defaults.removeObject(forKey: Key.itemsBaselined(repo))
     }
 
     public func wipeAll() {
