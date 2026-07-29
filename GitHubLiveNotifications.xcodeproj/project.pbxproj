@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10000000000000000000061 /* InboxEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000060 /* InboxEmptyState.swift */; };
+		A10000000000000000000063 /* InboxListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000062 /* InboxListView.swift */; };
+		A10000000000000000000065 /* InboxRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000064 /* InboxRowView.swift */; };
+		A10000000000000000000067 /* InboxSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000066 /* InboxSectionHeader.swift */; };
+		A10000000000000000000069 /* InboxListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000068 /* InboxListLayout.swift */; };
+		A1000000000000000000006B /* InboxSection+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006A /* InboxSection+Display.swift */; };
+		A1000000000000000000006D /* InboxListLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006C /* InboxListLayoutTests.swift */; };
+		A10000000000000000000051 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000050 /* AuthController.swift */; };
+		A10000000000000000000053 /* PATSetupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000052 /* PATSetupSheet.swift */; };
+		A10000000000000000000055 /* PATSetupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000054 /* PATSetupTests.swift */; };
+		A10000000000000000000057 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000056 /* SettingsView.swift */; };
+		A10000000000000000000059 /* SettingsWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000058 /* SettingsWindowTests.swift */; };
 		A10000000000000000000006 /* GitHubLiveNotificationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */; };
 		A10000000000000000000030 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002C /* DesignTokens.swift */; };
 		A10000000000000000000031 /* DoubleBezel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002D /* DoubleBezel.swift */; };
@@ -16,18 +28,12 @@
 		A10000000000000000000043 /* PanelMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000039 /* PanelMotion.swift */; };
 		A10000000000000000000044 /* SignalHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003A /* SignalHeader.swift */; };
 		A10000000000000000000045 /* PanelFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003B /* PanelFooter.swift */; };
-		A10000000000000000000051 /* InboxSection+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000047 /* InboxSection+Display.swift */; };
-		A10000000000000000000052 /* InboxListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000048 /* InboxListLayout.swift */; };
-		A10000000000000000000053 /* InboxEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000049 /* InboxEmptyState.swift */; };
-		A10000000000000000000054 /* InboxSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004A /* InboxSectionHeader.swift */; };
-		A10000000000000000000055 /* InboxRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004B /* InboxRowView.swift */; };
-		A10000000000000000000056 /* InboxListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004C /* InboxListView.swift */; };
 		A10000000000000000000033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002F /* Assets.xcassets */; };
 		A10000000000000000000016 /* GHNCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000015 /* GHNCore */; };
 		A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */; };
 		A1000000000000000000002B /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002A /* DesignSystemTests.swift */; };
 		A10000000000000000000040 /* MenuPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003F /* MenuPanelTests.swift */; };
-		A10000000000000000000050 /* InboxListLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004F /* InboxListLayoutTests.swift */; };
+				A1000000000000000000006D /* InboxListLayoutTests.swift in Sources */,
 		A10000000000000000000018 /* GHNCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000026 /* GHNCore */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A10000000000000000000060 /* InboxEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxEmptyState.swift; sourceTree = "<group>"; };
+		A10000000000000000000062 /* InboxListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListView.swift; sourceTree = "<group>"; };
+		A10000000000000000000064 /* InboxRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRowView.swift; sourceTree = "<group>"; };
+		A10000000000000000000066 /* InboxSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSectionHeader.swift; sourceTree = "<group>"; };
+		A10000000000000000000068 /* InboxListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayout.swift; sourceTree = "<group>"; };
+		A1000000000000000000006A /* InboxSection+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSection+Display.swift; sourceTree = "<group>"; };
+		A1000000000000000000006C /* InboxListLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayoutTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000003 /* GitHubLiveNotifications.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubLiveNotifications.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubLiveNotificationsApp.swift; sourceTree = "<group>"; };
 		A1000000000000000000002C /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
@@ -53,18 +66,16 @@
 		A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubLiveNotificationsTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000002A /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000003F /* MenuPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelTests.swift; sourceTree = "<group>"; };
-		A1000000000000000000004F /* InboxListLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayoutTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000037 /* PanelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatus.swift; sourceTree = "<group>"; };
 		A10000000000000000000038 /* MenuPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelView.swift; sourceTree = "<group>"; };
 		A10000000000000000000039 /* PanelMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelMotion.swift; sourceTree = "<group>"; };
 		A1000000000000000000003A /* SignalHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHeader.swift; sourceTree = "<group>"; };
 		A1000000000000000000003B /* PanelFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelFooter.swift; sourceTree = "<group>"; };
-		A10000000000000000000047 /* InboxSection+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxSection+Display.swift"; sourceTree = "<group>"; };
-		A10000000000000000000048 /* InboxListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayout.swift; sourceTree = "<group>"; };
-		A10000000000000000000049 /* InboxEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxEmptyState.swift; sourceTree = "<group>"; };
-		A1000000000000000000004A /* InboxSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSectionHeader.swift; sourceTree = "<group>"; };
-		A1000000000000000000004B /* InboxRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRowView.swift; sourceTree = "<group>"; };
-		A1000000000000000000004C /* InboxListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListView.swift; sourceTree = "<group>"; };
+		A10000000000000000000050 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		A10000000000000000000052 /* PATSetupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PATSetupSheet.swift; sourceTree = "<group>"; };
+		A10000000000000000000054 /* PATSetupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PATSetupTests.swift; sourceTree = "<group>"; };
+		A10000000000000000000056 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000058 /* SettingsWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +112,10 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */,
+				A10000000000000000000050 /* AuthController.swift */,
+				A10000000000000000000052 /* PATSetupSheet.swift */,
 				A10000000000000000000046 /* Panel */,
+				A10000000000000000000047 /* Settings */,
 				A10000000000000000000034 /* Design */,
 				A10000000000000000000035 /* Components */,
 				A10000000000000000000036 /* Previews */,
@@ -111,13 +125,21 @@
 			path = GitHubLiveNotifications;
 			sourceTree = "<group>";
 		};
+		A10000000000000000000047 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000056 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		A10000000000000000000046 /* Panel */ = {
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000038 /* MenuPanelView.swift */,
+				A1000000000000000000006A /* InboxSection+Display.swift */,
+				A10000000000000000000068 /* InboxListLayout.swift */,
 				A10000000000000000000037 /* PanelStatus.swift */,
-				A10000000000000000000047 /* InboxSection+Display.swift */,
-				A10000000000000000000048 /* InboxListLayout.swift */,
 			);
 			path = Panel;
 			sourceTree = "<group>";
@@ -135,12 +157,12 @@
 			children = (
 				A1000000000000000000002D /* DoubleBezel.swift */,
 				A1000000000000000000003A /* SignalHeader.swift */,
+				A10000000000000000000066 /* InboxSectionHeader.swift */,
+				A10000000000000000000064 /* InboxRowView.swift */,
+				A10000000000000000000062 /* InboxListView.swift */,
+				A10000000000000000000060 /* InboxEmptyState.swift */,
 				A1000000000000000000003B /* PanelFooter.swift */,
 				A10000000000000000000039 /* PanelMotion.swift */,
-				A10000000000000000000049 /* InboxEmptyState.swift */,
-				A1000000000000000000004A /* InboxSectionHeader.swift */,
-				A1000000000000000000004B /* InboxRowView.swift */,
-				A1000000000000000000004C /* InboxListView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -173,9 +195,11 @@
 			isa = PBXGroup;
 			children = (
 				A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */,
+				A1000000000000000000006C /* InboxListLayoutTests.swift */,
+				A10000000000000000000054 /* PATSetupTests.swift */,
 				A1000000000000000000002A /* DesignSystemTests.swift */,
 				A1000000000000000000003F /* MenuPanelTests.swift */,
-				A1000000000000000000004F /* InboxListLayoutTests.swift */,
+				A10000000000000000000058 /* SettingsWindowTests.swift */,
 			);
 			path = GitHubLiveNotificationsTests;
 			sourceTree = "<group>";
@@ -289,6 +313,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000006 /* GitHubLiveNotificationsApp.swift in Sources */,
+				A1000000000000000000006B /* InboxSection+Display.swift in Sources */,
+				A10000000000000000000069 /* InboxListLayout.swift in Sources */,
+				A10000000000000000000067 /* InboxSectionHeader.swift in Sources */,
+				A10000000000000000000065 /* InboxRowView.swift in Sources */,
+				A10000000000000000000063 /* InboxListView.swift in Sources */,
+				A10000000000000000000061 /* InboxEmptyState.swift in Sources */,
+				A10000000000000000000051 /* AuthController.swift in Sources */,
+				A10000000000000000000053 /* PATSetupSheet.swift in Sources */,
+				A10000000000000000000057 /* SettingsView.swift in Sources */,
 				A10000000000000000000030 /* DesignTokens.swift in Sources */,
 				A10000000000000000000031 /* DoubleBezel.swift in Sources */,
 				A10000000000000000000032 /* DesignSystemPreview.swift in Sources */,
@@ -297,12 +330,6 @@
 				A10000000000000000000043 /* PanelMotion.swift in Sources */,
 				A10000000000000000000044 /* SignalHeader.swift in Sources */,
 				A10000000000000000000045 /* PanelFooter.swift in Sources */,
-				A10000000000000000000051 /* InboxSection+Display.swift in Sources */,
-				A10000000000000000000052 /* InboxListLayout.swift in Sources */,
-				A10000000000000000000053 /* InboxEmptyState.swift in Sources */,
-				A10000000000000000000054 /* InboxSectionHeader.swift in Sources */,
-				A10000000000000000000055 /* InboxRowView.swift in Sources */,
-				A10000000000000000000056 /* InboxListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,7 +340,8 @@
 				A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */,
 				A1000000000000000000002B /* DesignSystemTests.swift in Sources */,
 				A10000000000000000000040 /* MenuPanelTests.swift in Sources */,
-				A10000000000000000000050 /* InboxListLayoutTests.swift in Sources */,
+				A10000000000000000000055 /* PATSetupTests.swift in Sources */,
+				A10000000000000000000059 /* SettingsWindowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
