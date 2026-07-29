@@ -4,10 +4,19 @@ import SwiftUI
 @main
 struct GitHubLiveNotificationsApp: App {
     @StateObject private var auth = AuthController()
+    @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
+    @State private var isPolling = false
+    @State private var refreshBlocked = false
 
     var body: some Scene {
-        MenuBarExtra("GitHub Live Notifications", systemImage: "bell.badge") {
-            MenuBarPanel(auth: auth)
+        MenuBarExtra("GitHub Live Notifications", systemImage: "bell.fill") {
+            RootMenuPanel(
+                auth: auth,
+                status: $panelStatus,
+                isPolling: $isPolling,
+                refreshBlocked: $refreshBlocked,
+                onRefresh: refreshNow
+            )
         }
         .menuBarExtraStyle(.window)
 
@@ -17,33 +26,49 @@ struct GitHubLiveNotificationsApp: App {
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
         .defaultPosition(.center)
+
+        Settings {
+            Text("Settings")
+                .padding()
+        }
+    }
+
+    private func refreshNow() {
+        isPolling = true
+        Task {
+            try? await Task.sleep(nanoseconds: 800_000_000)
+            await MainActor.run {
+                panelStatus = .fresh(lastUpdated: Date())
+                isPolling = false
+            }
+        }
     }
 }
 
-/// Menu-bar panel placeholder until M4 inbox UI lands.
-private struct MenuBarPanel: View {
+/// Hosts the menu panel and opens the PAT sheet on first launch when needed.
+private struct RootMenuPanel: View {
     @ObservedObject var auth: AuthController
+    @Binding var status: PanelStatus
+    @Binding var isPolling: Bool
+    @Binding var refreshBlocked: Bool
+    let onRefresh: () -> Void
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text("GitHub Live Notifications")
-                .font(.headline)
-            if let login = auth.login {
-                Text("Signed in as \(login)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("Core v\(GHNCoreInfo.version)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding()
-        .frame(width: 260)
+        MenuPanelView(
+            status: status,
+            isPolling: isPolling,
+            refreshBlocked: refreshBlocked,
+            onRefresh: onRefresh
+        )
         .task {
             await auth.restoreSessionIfNeeded()
             if !auth.isAuthenticated {
+                openWindow(id: "pat-setup")
+            }
+        }
+        .onChange(of: auth.isAuthenticated) { isAuthenticated in
+            if !isAuthenticated {
                 openWindow(id: "pat-setup")
             }
         }

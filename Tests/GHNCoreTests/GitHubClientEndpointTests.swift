@@ -243,6 +243,45 @@ final class GitHubClientEndpointTests: XCTestCase {
         XCTAssertEqual(issues.map(\.title), ["Real issue", "Another issue"])
     }
 
+    // MARK: - PATCH /notifications/threads/{id}
+
+    func testMarkThreadReadSendsPATCHAndAccepts205() async throws {
+        let (client, _) = makeClient { request in
+            XCTAssertEqual(request.httpMethod, "PATCH")
+            XCTAssertEqual(request.url?.path, "/notifications/threads/abc123")
+            return (Self.httpResponse(url: request.url!, status: 205), Data())
+        }
+
+        try await client.markThreadRead(threadID: "abc123")
+    }
+
+    func testMarkThreadReadMaps401ToInvalidToken() async {
+        let (client, _) = makeClient { request in
+            (Self.httpResponse(url: request.url!, status: 401), Data())
+        }
+
+        do {
+            try await client.markThreadRead(threadID: "x")
+            XCTFail("expected throw")
+        } catch let error as GitHubClientError {
+            XCTAssertEqual(error, .invalidToken)
+        } catch {
+            XCTFail("expected GitHubClientError.invalidToken, got \(error)")
+        }
+    }
+
+    // MARK: - PUT /notifications (mark all read)
+
+    func testMarkAllNotificationsReadSendsPUT() async throws {
+        let (client, _) = makeClient { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+            XCTAssertEqual(request.url?.path, "/notifications")
+            return (Self.httpResponse(url: request.url!, status: 205), Data())
+        }
+
+        try await client.markAllNotificationsRead()
+    }
+
     // MARK: - Helpers
 
     private func makeClient(

@@ -143,6 +143,38 @@ public final class GitHubClient: @unchecked Sendable {
         return (data, http)
     }
 
+    /// PATCH `baseURL + path`; accepts 2xx and 205 Reset Content with no body.
+    func patch(_ path: String) async throws {
+        try await performMutation(path, method: "PATCH")
+    }
+
+    /// PUT `baseURL + path`; accepts 2xx, 202 Accepted, and 205 Reset Content.
+    func put(_ path: String) async throws {
+        try await performMutation(path, method: "PUT")
+    }
+
+    func performMutation(_ path: String, method: String) async throws {
+        guard let url = URL(string: path, relativeTo: baseURL) else {
+            throw GitHubClientError.invalidURL(path)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+
+        let (_, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubClientError.unexpectedResponse
+        }
+
+        switch http.statusCode {
+        case 200...299, 202, 205:
+            return
+        default:
+            throw mapHTTPError(status: http.statusCode, response: http)
+        }
+    }
+
     static func nextPageURL(from linkHeader: String?) -> URL? {
         guard let linkHeader else { return nil }
         for part in linkHeader.split(separator: ",") {
