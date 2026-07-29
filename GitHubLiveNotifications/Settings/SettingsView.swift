@@ -4,6 +4,7 @@ import SwiftUI
 /// Settings window with double-bezel Form groups (UI-SPEC §3.1).
 struct SettingsView: View {
     @ObservedObject var auth: AuthController
+    @StateObject private var repoSelection = RepoSelectionController.live(selfLogin: nil)
     @Environment(\.openWindow) private var openWindow
 
     @State private var bannersEnabled = true
@@ -60,6 +61,9 @@ struct SettingsView: View {
         }
         .frame(width: 520, height: 640)
         .background(GHNColor.surfaceCanvas)
+        .task(id: auth.login) {
+            await repoSelection.updateSelfLogin(auth.login)
+        }
     }
 
     // MARK: - Sections
@@ -105,12 +109,7 @@ struct SettingsView: View {
 
     @ViewBuilder
     private var repositoriesSection: some View {
-        Text("Search and filter repositories to monitor.")
-            .font(GHNFont.meta)
-            .foregroundStyle(GHNColor.textSecondary)
-        Text("Up to 50 repositories · warning at 40+")
-            .font(GHNFont.mono)
-            .foregroundStyle(GHNColor.textTertiary)
+        RepoPickerView(selection: repoSelection)
     }
 
     @ViewBuilder

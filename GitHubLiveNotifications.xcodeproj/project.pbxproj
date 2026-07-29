@@ -11,6 +11,9 @@
 		A10000000000000000000053 /* PATSetupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000052 /* PATSetupSheet.swift */; };
 		A10000000000000000000055 /* PATSetupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000054 /* PATSetupTests.swift */; };
 		A10000000000000000000057 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000056 /* SettingsView.swift */; };
+		A1000000000000000000005B /* RepoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000005A /* RepoPickerView.swift */; };
+		A1000000000000000000005D /* RepoSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000005C /* RepoSelectionController.swift */; };
+		A1000000000000000000005F /* RepoPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000005E /* RepoPickerTests.swift */; };
 		A10000000000000000000059 /* SettingsWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000058 /* SettingsWindowTests.swift */; };
 		A10000000000000000000006 /* GitHubLiveNotificationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */; };
 		A10000000000000000000030 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002C /* DesignTokens.swift */; };
@@ -60,6 +63,9 @@
 		A10000000000000000000052 /* PATSetupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PATSetupSheet.swift; sourceTree = "<group>"; };
 		A10000000000000000000054 /* PATSetupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PATSetupTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000056 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1000000000000000000005A /* RepoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoPickerView.swift; sourceTree = "<group>"; };
+		A1000000000000000000005C /* RepoSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoSelectionController.swift; sourceTree = "<group>"; };
+		A1000000000000000000005E /* RepoPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoPickerTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000058 /* SettingsWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000056 /* SettingsView.swift */,
+				A1000000000000000000005A /* RepoPickerView.swift */,
+				A1000000000000000000005C /* RepoSelectionController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -178,6 +186,7 @@
 				A1000000000000000000002A /* DesignSystemTests.swift */,
 				A1000000000000000000003F /* MenuPanelTests.swift */,
 				A10000000000000000000058 /* SettingsWindowTests.swift */,
+				A1000000000000000000005E /* RepoPickerTests.swift */,
 			);
 			path = GitHubLiveNotificationsTests;
 			sourceTree = "<group>";
@@ -294,6 +303,8 @@
 				A10000000000000000000051 /* AuthController.swift in Sources */,
 				A10000000000000000000053 /* PATSetupSheet.swift in Sources */,
 				A10000000000000000000057 /* SettingsView.swift in Sources */,
+				A1000000000000000000005B /* RepoPickerView.swift in Sources */,
+				A1000000000000000000005D /* RepoSelectionController.swift in Sources */,
 				A10000000000000000000030 /* DesignTokens.swift in Sources */,
 				A10000000000000000000031 /* DoubleBezel.swift in Sources */,
 				A10000000000000000000032 /* DesignSystemPreview.swift in Sources */,
@@ -314,6 +325,7 @@
 				A10000000000000000000040 /* MenuPanelTests.swift in Sources */,
 				A10000000000000000000055 /* PATSetupTests.swift in Sources */,
 				A10000000000000000000059 /* SettingsWindowTests.swift in Sources */,
+				A1000000000000000000005F /* RepoPickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
