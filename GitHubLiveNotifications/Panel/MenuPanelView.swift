@@ -9,6 +9,9 @@ struct MenuPanelView: View {
     var isPolling: Bool
     var refreshBlocked: Bool
     var onRefresh: () -> Void
+    var onOpen: (InboxItem) -> Void = { _ in }
+    var onMarkRead: ((InboxItem) -> Void)?
+    var onMarkAllRead: (() -> Void)?
 
     var body: some View {
         DoubleBezel {
@@ -23,13 +26,18 @@ struct MenuPanelView: View {
                 }
 
                 ScrollView {
-                    InboxListView(items: items, isUnread: isUnread)
+                    InboxListView(
+                        items: items,
+                        isUnread: isUnread,
+                        onOpen: onOpen,
+                        onMarkRead: onMarkRead
+                    )
                         .padding(.horizontal, 12)
                         .padding(.vertical, 16)
                 }
                 .frame(minHeight: 180, maxHeight: 420)
 
-                PanelFooter()
+                PanelFooter(onMarkAllRead: onMarkAllRead)
             }
         }
         .frame(width: 360)

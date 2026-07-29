@@ -5,6 +5,8 @@ import SwiftUI
 struct InboxRowView: View {
     let item: InboxItem
     let isUnread: Bool
+    var onOpen: () -> Void = {}
+    var onMarkRead: (() -> Void)?
     var now: Date = Date()
 
     @State private var isHovered = false
@@ -44,7 +46,16 @@ struct InboxRowView: View {
             RoundedRectangle(cornerRadius: GHNRadius.pill, style: .continuous)
                 .fill(isHovered ? GHNColor.surfaceElevated.opacity(0.65) : Color.clear)
         )
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onOpen)
         .onHover { isHovered = $0 }
+        .contextMenu {
+            if onMarkRead != nil {
+                Button("Mark read") {
+                    onMarkRead?()
+                }
+            }
+        }
     }
 }
 

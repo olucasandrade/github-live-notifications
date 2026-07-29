@@ -36,7 +36,11 @@
 		A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */; };
 		A1000000000000000000002B /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002A /* DesignSystemTests.swift */; };
 		A10000000000000000000040 /* MenuPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003F /* MenuPanelTests.swift */; };
-				A1000000000000000000006D /* InboxListLayoutTests.swift in Sources */,
+		A1000000000000000000006F /* MenuBarBadgeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006E /* MenuBarBadgeFormat.swift */; };
+		A10000000000000000000071 /* InboxController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000070 /* InboxController.swift */; };
+		A10000000000000000000073 /* InboxItemThreadBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000072 /* InboxItemThreadBridge.swift */; };
+		A10000000000000000000075 /* MenuBarBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000074 /* MenuBarBadgeLabel.swift */; };
+		A10000000000000000000077 /* MenuBarBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000076 /* MenuBarBadgeTests.swift */; };
 		A10000000000000000000018 /* GHNCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000026 /* GHNCore */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +60,7 @@
 		A10000000000000000000064 /* InboxRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRowView.swift; sourceTree = "<group>"; };
 		A10000000000000000000066 /* InboxSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSectionHeader.swift; sourceTree = "<group>"; };
 		A10000000000000000000068 /* InboxListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayout.swift; sourceTree = "<group>"; };
-		A1000000000000000000006A /* InboxSection+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxSection+Display.swift; sourceTree = "<group>"; };
+		A1000000000000000000006A /* InboxSection+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxSection+Display.swift"; sourceTree = "<group>"; };
 		A1000000000000000000006C /* InboxListLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayoutTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000003 /* GitHubLiveNotifications.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubLiveNotifications.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubLiveNotificationsApp.swift; sourceTree = "<group>"; };
@@ -82,6 +86,11 @@
 		A1000000000000000000005C /* RepoSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoSelectionController.swift; sourceTree = "<group>"; };
 		A1000000000000000000005E /* RepoPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoPickerTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000058 /* SettingsWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowTests.swift; sourceTree = "<group>"; };
+		A1000000000000000000006E /* MenuBarBadgeFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarBadgeFormat.swift; sourceTree = "<group>"; };
+		A10000000000000000000070 /* InboxController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxController.swift; sourceTree = "<group>"; };
+		A10000000000000000000072 /* InboxItemThreadBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxItemThreadBridge.swift; sourceTree = "<group>"; };
+		A10000000000000000000074 /* MenuBarBadgeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarBadgeLabel.swift; sourceTree = "<group>"; };
+		A10000000000000000000076 /* MenuBarBadgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarBadgeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000004 /* GitHubLiveNotificationsApp.swift */,
+				A10000000000000000000070 /* InboxController.swift */,
+				A10000000000000000000072 /* InboxItemThreadBridge.swift */,
 				A10000000000000000000050 /* AuthController.swift */,
 				A10000000000000000000052 /* PATSetupSheet.swift */,
 				A10000000000000000000046 /* Panel */,
@@ -156,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				A1000000000000000000002C /* DesignTokens.swift */,
+				A1000000000000000000006E /* MenuBarBadgeFormat.swift */,
+				A10000000000000000000074 /* MenuBarBadgeLabel.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -203,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */,
+				A10000000000000000000076 /* MenuBarBadgeTests.swift */,
 				A1000000000000000000006C /* InboxListLayoutTests.swift */,
 				A10000000000000000000054 /* PATSetupTests.swift */,
 				A1000000000000000000002A /* DesignSystemTests.swift */,
@@ -322,6 +336,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000006 /* GitHubLiveNotificationsApp.swift in Sources */,
+				A10000000000000000000071 /* InboxController.swift in Sources */,
+				A10000000000000000000073 /* InboxItemThreadBridge.swift in Sources */,
+				A1000000000000000000006F /* MenuBarBadgeFormat.swift in Sources */,
+				A10000000000000000000075 /* MenuBarBadgeLabel.swift in Sources */,
 				A1000000000000000000006B /* InboxSection+Display.swift in Sources */,
 				A10000000000000000000069 /* InboxListLayout.swift in Sources */,
 				A10000000000000000000067 /* InboxSectionHeader.swift in Sources */,
@@ -349,6 +367,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */,
+				A1000000000000000000006D /* InboxListLayoutTests.swift in Sources */,
+				A10000000000000000000077 /* MenuBarBadgeTests.swift in Sources */,
 				A1000000000000000000002B /* DesignSystemTests.swift in Sources */,
 				A10000000000000000000040 /* MenuPanelTests.swift in Sources */,
 				A10000000000000000000055 /* PATSetupTests.swift in Sources */,
