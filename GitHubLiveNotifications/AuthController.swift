@@ -17,13 +17,16 @@ final class AuthController: ObservableObject {
 
     private let patStore: PATStore
     private let validateToken: (String) async throws -> GitHubUser
+    private let notificationAuth: NotificationAuthorizationController?
 
     init(
         patStore: PATStore = KeychainPATStore(),
-        validateToken: @escaping (String) async throws -> GitHubUser = AuthController.liveValidate
+        validateToken: @escaping (String) async throws -> GitHubUser = AuthController.liveValidate,
+        notificationAuth: NotificationAuthorizationController? = nil
     ) {
         self.patStore = patStore
         self.validateToken = validateToken
+        self.notificationAuth = notificationAuth
     }
 
     /// Restores session from Keychain on launch when a PAT is already stored.
@@ -52,6 +55,7 @@ final class AuthController: ObservableObject {
             }
             login = user.login
             validationState = .idle
+            await notificationAuth?.requestNotificationPermission()
         } catch GitHubClientError.invalidToken {
             login = nil
             validationState = .failed("Invalid token. Check scopes and try again.")

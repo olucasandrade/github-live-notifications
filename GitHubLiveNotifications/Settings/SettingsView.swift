@@ -4,19 +4,23 @@ import SwiftUI
 /// Settings window with double-bezel Form groups (UI-SPEC §3.1).
 struct SettingsView: View {
     @ObservedObject var auth: AuthController
+    @ObservedObject var bannerSettings: BannerSettingsStore
+    @ObservedObject var notificationAuth: NotificationAuthorizationController
     @StateObject private var repoSelection = RepoSelectionController.live(selfLogin: nil)
     @Environment(\.openWindow) private var openWindow
 
-    @State private var bannersEnabled = true
     @State private var includeBots = false
     @State private var includeDraftPRs = false
     @State private var launchAtLogin = false
     @State private var enabledReasons = Set(NotificationReason.allCases)
-    @State private var bannerDelivery: [String: Bool] = [:]
 
     private static let releasesURL = URL(
         string: "https://github.com/olucasandrade/github-live-notifications/releases"
     )!
+
+    private var bannerControlsDisabled: Bool {
+        notificationAuth.isBadgeOnlyMode || !bannerSettings.globalEnabled
+    }
 
     var body: some View {
         ScrollView {
@@ -63,6 +67,9 @@ struct SettingsView: View {
         .background(GHNColor.surfaceCanvas)
         .task(id: auth.login) {
             await repoSelection.updateSelfLogin(auth.login)
+        }
+        .task {
+            await notificationAuth.refreshAuthorizationStatus()
         }
     }
 
@@ -120,11 +127,11 @@ struct SettingsView: View {
                     .labelsHidden()
             }
         }
-        reasonRow(id: "new_on_my_repos", title: "New on my repos") {
+        reasonRow(id: BannerCategory.newOnMyRepos.rawValue, title: "New on my repos") {
             Toggle("", isOn: .constant(true))
                 .labelsHidden()
         }
-        reasonRow(id: "stars", title: "Stars") {
+        reasonRow(id: BannerCategory.stars.rawValue, title: "Stars") {
             Toggle("", isOn: .constant(false))
                 .labelsHidden()
         }
@@ -145,19 +152,25 @@ struct SettingsView: View {
             }
             Toggle("Deliver banner", isOn: bannerBinding(for: id))
                 .font(GHNFont.meta)
-                .disabled(!bannersEnabled)
+                .disabled(bannerControlsDisabled || notificationAuth.isBadgeOnlyMode)
                 .padding(.leading, 8)
         }
     }
 
     @ViewBuilder
     private var bannersSection: some View {
-        Toggle("Show banner notifications", isOn: $bannersEnabled)
+        Toggle("Show banner notifications", isOn: globalBannerBinding)
             .font(GHNFont.rowTitle)
             .tint(GHNColor.accentSignal)
+            .disabled(notificationAuth.isBadgeOnlyMode)
         Text("Alerts for enabled notification types when the app is in the background.")
             .font(GHNFont.meta)
             .foregroundStyle(GHNColor.textSecondary)
+        if notificationAuth.isBadgeOnlyMode {
+            Text("Badge-only mode")
+                .font(GHNFont.meta)
+                .foregroundStyle(GHNColor.textSecondary)
+        }
     }
 
     @ViewBuilder
@@ -203,8 +216,15 @@ struct SettingsView: View {
 
     private func bannerBinding(for id: String) -> Binding<Bool> {
         Binding(
-            get: { bannerDelivery[id, default: false] },
-            set: { bannerDelivery[id] = $0 }
+            get: { bannerSettings.isBannerEnabled(for: id) },
+            set: { bannerSettings.setBannerEnabled($0, for: id) }
+        )
+    }
+
+    private var globalBannerBinding: Binding<Bool> {
+        Binding(
+            get: { bannerSettings.globalEnabled },
+            set: { bannerSettings.globalEnabled = $0 }
         )
     }
 }
