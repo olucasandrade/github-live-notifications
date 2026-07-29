@@ -4,6 +4,8 @@ public enum GitHubClientError: Error, Equatable {
     case invalidURL(String)
     case unexpectedResponse
     case httpStatus(Int)
+    case invalidToken
+    case rateLimited(reset: Date)
 }
 
 /// Outcome of a conditional GET (PLAN.md: ETag; honor X-Poll-Interval).
@@ -64,7 +66,23 @@ public final class GitHubClient: @unchecked Sendable {
             }
             return .fresh(body: body, etag: etag, pollInterval: pollInterval)
         default:
-            throw GitHubClientError.httpStatus(http.statusCode)
+            throw mapHTTPError(status: http.statusCode, response: http)
+        }
+    }
+
+    private func mapHTTPError(status: Int, response: HTTPURLResponse) -> GitHubClientError {
+        switch status {
+        case 401:
+            return .invalidToken
+        case 403:
+            if response.value(forHTTPHeaderField: "X-RateLimit-Remaining") == "0",
+               let resetHeader = response.value(forHTTPHeaderField: "X-RateLimit-Reset"),
+               let resetEpoch = TimeInterval(resetHeader) {
+                return .rateLimited(reset: Date(timeIntervalSince1970: resetEpoch))
+            }
+            return .invalidToken
+        default:
+            return .httpStatus(status)
         }
     }
 
