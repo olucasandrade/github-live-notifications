@@ -3,6 +3,8 @@ import SwiftUI
 
 /// Panel footer actions (UI-SPEC §2.3).
 struct PanelFooter: View {
+    var onMarkAllRead: (() -> Void)?
+
     var body: some View {
         VStack(spacing: 0) {
             Divider()
@@ -13,6 +15,15 @@ struct PanelFooter: View {
                     NSWorkspace.shared.open(Self.notificationsURL)
                 }
                 .buttonStyle(PanelPrimaryButtonStyle())
+
+                if let onMarkAllRead {
+                    Button("Mark all read") {
+                        onMarkAllRead()
+                    }
+                    .font(GHNFont.meta)
+                    .foregroundStyle(GHNColor.textSecondary)
+                    .buttonStyle(.borderless)
+                }
 
                 Spacer(minLength: 8)
 

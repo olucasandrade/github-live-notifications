@@ -4,21 +4,23 @@ import SwiftUI
 @main
 struct GitHubLiveNotificationsApp: App {
     @StateObject private var auth = AuthController()
-    @State private var inboxItems: [InboxItem] = []
+    @StateObject private var inbox = InboxController()
     @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
     @State private var isPolling = false
     @State private var refreshBlocked = false
 
     var body: some Scene {
-        MenuBarExtra("GitHub Live Notifications", systemImage: "bell.fill") {
+        MenuBarExtra {
             RootMenuPanel(
                 auth: auth,
-                items: $inboxItems,
+                inbox: inbox,
                 status: $panelStatus,
                 isPolling: $isPolling,
                 refreshBlocked: $refreshBlocked,
                 onRefresh: refreshNow
             )
+        } label: {
+            MenuBarBadgeLabel(unreadCount: inbox.unreadCount)
         }
         .menuBarExtraStyle(.window)
 
@@ -49,7 +51,7 @@ struct GitHubLiveNotificationsApp: App {
 /// Hosts the menu panel and opens the PAT sheet on first launch when needed.
 private struct RootMenuPanel: View {
     @ObservedObject var auth: AuthController
-    @Binding var items: [InboxItem]
+    @ObservedObject var inbox: InboxController
     @Binding var status: PanelStatus
     @Binding var isPolling: Bool
     @Binding var refreshBlocked: Bool
@@ -58,23 +60,38 @@ private struct RootMenuPanel: View {
 
     var body: some View {
         MenuPanelView(
-            items: items,
-            isUnread: { _ in true },
+            items: inbox.items,
+            isUnread: inbox.isUnread,
             status: status,
             isPolling: isPolling,
             refreshBlocked: refreshBlocked,
-            onRefresh: onRefresh
+            onRefresh: onRefresh,
+            onOpen: inbox.openInBrowser,
+            onMarkRead: inbox.markRead,
+            onMarkAllRead: inbox.markAllRead
         )
         .task {
             await auth.restoreSessionIfNeeded()
+            await configureInboxIfNeeded()
             if !auth.isAuthenticated {
                 openWindow(id: "pat-setup")
             }
         }
         .onChange(of: auth.isAuthenticated) { isAuthenticated in
-            if !isAuthenticated {
+            if isAuthenticated {
+                Task { await configureInboxIfNeeded() }
+            } else {
+                inbox.configure(token: nil)
+                inbox.replaceItems([])
                 openWindow(id: "pat-setup")
             }
         }
+    }
+
+    private func configureInboxIfNeeded() async {
+        guard auth.isAuthenticated else { return }
+        let store = KeychainPATStore()
+        let token = try? store.load()
+        inbox.configure(token: token)
     }
 }

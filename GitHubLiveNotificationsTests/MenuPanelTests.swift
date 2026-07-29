@@ -139,6 +139,42 @@ final class MenuPanelTests: XCTestCase {
         XCTAssertTrue(panelSource.contains("InboxListView"), "Panel body must render InboxListView")
         XCTAssertTrue(panelSource.contains("items:"), "MenuPanelView must accept inbox items")
         let appSource = try appSource(at: "GitHubLiveNotificationsApp.swift")
-        XCTAssertTrue(appSource.contains("inboxItems"), "App must hold inbox items state")
+        XCTAssertTrue(appSource.contains("InboxController"), "App must hold inbox state via InboxController")
+    }
+
+    // MARK: - Badge, URL open, mark read (UI-SPEC §2.5 / §2.2, T4.4)
+
+    func testMenuBarBadgeCapsAt99Plus() throws {
+        let formatSource = try appSource(at: "Design/MenuBarBadgeFormat.swift")
+        XCTAssertTrue(formatSource.contains("99+"), "Badge must cap display at 99+")
+        let labelSource = try appSource(at: "Design/MenuBarBadgeLabel.swift")
+        XCTAssertTrue(labelSource.contains("MenuBarBadgeFormat"), "Menu bar label must use badge formatter")
+        let appSource = try appSource(at: "GitHubLiveNotificationsApp.swift")
+        XCTAssertTrue(appSource.contains("MenuBarBadgeLabel"), "App must render badge on MenuBarExtra label")
+    }
+
+    func testInboxRowOpensResolvedURLInBrowser() throws {
+        let rowSource = try appSource(at: "Components/InboxRowView.swift")
+        XCTAssertTrue(rowSource.contains("onOpen"), "Row must accept open action")
+        XCTAssertTrue(rowSource.contains("onTapGesture") || rowSource.contains("Button"), "Row must handle click")
+        let controllerSource = try appSource(at: "InboxController.swift")
+        XCTAssertTrue(controllerSource.contains("openInBrowser"), "Controller must open resolved html_url")
+        XCTAssertTrue(controllerSource.contains("ThreadHTMLURLResolver"), "Controller must use URL resolver")
+    }
+
+    func testInboxRowMarkReadContextMenu() throws {
+        let rowSource = try appSource(at: "Components/InboxRowView.swift")
+        XCTAssertTrue(rowSource.contains("Mark read"), "Thread rows need Mark read action")
+        XCTAssertTrue(rowSource.contains("contextMenu"), "Mark read belongs in context menu")
+        let controllerSource = try appSource(at: "InboxController.swift")
+        XCTAssertTrue(controllerSource.contains("InboxActions"), "Controller must wire InboxActions")
+        XCTAssertTrue(controllerSource.contains("markRead"), "Controller must call markRead")
+    }
+
+    func testMarkAllReadWiredToCore() throws {
+        let panelSource = try appSource(at: "Panel/MenuPanelView.swift")
+        XCTAssertTrue(panelSource.contains("onMarkAllRead"), "Panel must expose mark-all action")
+        let controllerSource = try appSource(at: "InboxController.swift")
+        XCTAssertTrue(controllerSource.contains("markAllRead"), "Controller must call markAllRead")
     }
 }

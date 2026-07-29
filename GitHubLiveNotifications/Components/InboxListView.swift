@@ -5,6 +5,8 @@ import SwiftUI
 struct InboxListView: View {
     let items: [InboxItem]
     let isUnread: (InboxItem) -> Bool
+    var onOpen: (InboxItem) -> Void = { _ in }
+    var onMarkRead: ((InboxItem) -> Void)?
 
     private var layout: InboxListLayout.Result {
         InboxListLayout.layout(items: items)
@@ -20,7 +22,12 @@ struct InboxListView: View {
                         InboxSectionHeader(section: slice.section, count: slice.totalCount)
 
                         ForEach(slice.visibleItems, id: \.id) { item in
-                            InboxRowView(item: item, isUnread: isUnread(item))
+                            InboxRowView(
+                                item: item,
+                                isUnread: isUnread(item),
+                                onOpen: { onOpen(item) },
+                                onMarkRead: onMarkRead.map { handler in { handler(item) } }
+                            )
                         }
                     }
 
