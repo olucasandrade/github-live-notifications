@@ -43,6 +43,22 @@ public struct NotificationThread: Decodable, Equatable, Sendable {
 public struct GitHubRepository: Decodable, Equatable, Sendable {
     public struct Owner: Decodable, Equatable, Sendable {
         public let login: String
+        public let type: String
+
+        public init(login: String, type: String = "User") {
+            self.login = login
+            self.type = type
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case login, type
+        }
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            login = try container.decode(String.self, forKey: .login)
+            type = try container.decodeIfPresent(String.self, forKey: .type) ?? "User"
+        }
     }
 
     public let id: Int
@@ -55,6 +71,26 @@ public struct GitHubRepository: Decodable, Equatable, Sendable {
     public let stargazersCount: Int
 
     public var ownerLogin: String { owner.login }
+
+    public init(
+        id: Int,
+        name: String,
+        fullName: String,
+        owner: Owner,
+        fork: Bool,
+        archived: Bool,
+        isPrivate: Bool,
+        stargazersCount: Int
+    ) {
+        self.id = id
+        self.name = name
+        self.fullName = fullName
+        self.owner = owner
+        self.fork = fork
+        self.archived = archived
+        self.isPrivate = isPrivate
+        self.stargazersCount = stargazersCount
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, name, owner, fork, archived
