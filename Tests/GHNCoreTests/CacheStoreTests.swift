@@ -142,6 +142,51 @@ final class CacheStoreTests: XCTestCase {
         XCTAssertEqual(store.etag(forKey: "stars:octocat/a"), #""b""#)
     }
 
+    // MARK: - Read / dismissed state (T2.4)
+
+    func testThreadReadStartsUnread() {
+        XCTAssertFalse(store.isThreadRead("t1"))
+    }
+
+    func testMarkThreadReadRecordsID() {
+        store.markThreadRead("t1")
+        XCTAssertTrue(store.isThreadRead("t1"))
+        XCTAssertFalse(store.isThreadRead("t2"))
+    }
+
+    func testMarkAllThreadsReadRecordsEveryID() {
+        store.markAllThreadsRead(["t1", "t2", "t3"])
+        XCTAssertTrue(store.isThreadRead("t1"))
+        XCTAssertTrue(store.isThreadRead("t2"))
+        XCTAssertTrue(store.isThreadRead("t3"))
+    }
+
+    func testDismissedSyntheticStartsEmpty() {
+        XCTAssertFalse(store.isSyntheticDismissed("s1"))
+    }
+
+    func testDismissSyntheticRecordsID() {
+        store.dismissSynthetic("s1")
+        XCTAssertTrue(store.isSyntheticDismissed("s1"))
+        XCTAssertFalse(store.isSyntheticDismissed("s2"))
+    }
+
+    func testDismissAllSyntheticsRecordsEveryID() {
+        store.dismissAllSynthetics(["s1", "s2"])
+        XCTAssertTrue(store.isSyntheticDismissed("s1"))
+        XCTAssertTrue(store.isSyntheticDismissed("s2"))
+    }
+
+    func testWipeAllClearsReadAndDismissedState() {
+        store.markThreadRead("t1")
+        store.dismissSynthetic("s1")
+
+        store.wipeAll()
+
+        XCTAssertFalse(store.isThreadRead("t1"))
+        XCTAssertFalse(store.isSyntheticDismissed("s1"))
+    }
+
     // MARK: - Wipe on unselect repo (PLAN.md: Cache)
 
     func testWipeRepoClearsItemIDsAndStarCount() {

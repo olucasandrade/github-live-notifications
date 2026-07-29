@@ -152,6 +152,16 @@ extension GitHubClient {
         try await get("/repos/\(owner)/\(name)/pulls?state=open&per_page=100", as: [PullRequestSummary].self)
     }
 
+    /// `PATCH /notifications/threads/{id}` — marks one thread read (205 Reset Content).
+    public func markThreadRead(threadID: String) async throws {
+        try await patch("/notifications/threads/\(threadID)")
+    }
+
+    /// `PUT /notifications` — marks all notification threads read for the user.
+    public func markAllNotificationsRead() async throws {
+        try await put("/notifications")
+    }
+
     /// Open issues only; entries that include `pull_request` are dropped (PR dupes).
     public func fetchIssues(owner: String, name: String) async throws -> FetchResult<[IssueSummary]> {
         let result = try await get(
