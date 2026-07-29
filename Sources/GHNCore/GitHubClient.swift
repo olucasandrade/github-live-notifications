@@ -59,7 +59,7 @@ public final class GitHubClient: @unchecked Sendable {
         case 304:
             return .notModified(pollInterval: pollInterval)
         case 200...299:
-            let body = try JSONDecoder().decode(T.self, from: data)
+            let body = try Self.jsonDecoder.decode(T.self, from: data)
             let etag = http.value(forHTTPHeaderField: "ETag")
             if let etag {
                 storeETag(etag, for: url)
@@ -70,7 +70,7 @@ public final class GitHubClient: @unchecked Sendable {
         }
     }
 
-    private func mapHTTPError(status: Int, response: HTTPURLResponse) -> GitHubClientError {
+    func mapHTTPError(status: Int, response: HTTPURLResponse) -> GitHubClientError {
         switch status {
         case 401:
             return .invalidToken
@@ -94,9 +94,51 @@ public final class GitHubClient: @unchecked Sendable {
         return etags[url]
     }
 
-    private func storeETag(_ etag: String, for url: URL) {
+    func storeETag(_ etag: String, for url: URL) {
         lock.lock()
         defer { lock.unlock() }
         etags[url] = etag
+    }
+
+    static let jsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
+
+    /// Raw GET for pagination helpers; reuses ETag revalidation keyed by request URL.
+    func performGet(_ path: String) async throws -> (Data, HTTPURLResponse) {
+        guard let url = URL(string: path, relativeTo: baseURL) else {
+            throw GitHubClientError.invalidURL(path)
+        }
+        return try await performGetURL(url)
+    }
+
+    func performGetURL(_ url: URL) async throws -> (Data, HTTPURLResponse) {
+        var request = URLRequest(url: url)
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        if let etag = storedETag(for: url) {
+            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
+        }
+
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubClientError.unexpectedResponse
+        }
+        return (data, http)
+    }
+
+    static func nextPageURL(from linkHeader: String?) -> URL? {
+        guard let linkHeader else { return nil }
+        for part in linkHeader.split(separator: ",") {
+            let trimmed = part.trimmingCharacters(in: .whitespaces)
+            guard trimmed.contains("rel=\"next\"") else { continue }
+            guard let start = trimmed.firstIndex(of: "<"),
+                  let end = trimmed.firstIndex(of: ">"),
+                  start < end else { continue }
+            let urlString = String(trimmed[trimmed.index(after: start)..<end])
+            return URL(string: urlString)
+        }
+        return nil
     }
 }
