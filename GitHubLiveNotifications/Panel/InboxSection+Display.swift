@@ -3,7 +3,7 @@ import SwiftUI
 
 extension InboxSection {
     /// PLAN.md section order (`InboxSection.allCases`).
-    static var displayOrder: [InboxSection] { allCases }
+    static var displayOrder: [InboxSection] { InboxSection.allCases }
 
     var title: String {
         switch self {
