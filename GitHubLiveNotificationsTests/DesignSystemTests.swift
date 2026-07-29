@@ -115,9 +115,9 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertTrue(source.contains("surfaceElevated"), "Outer fill must use elevated surface token")
     }
 
-    func testAppPlaceholderUsesDoubleBezel() throws {
-        let source = try appSource(named: "GitHubLiveNotificationsApp.swift")
-        XCTAssertTrue(source.contains("DoubleBezel"), "Menu panel placeholder should demo DoubleBezel")
+    func testMenuPanelUsesDoubleBezel() throws {
+        let source = try appSource(named: "Panel/MenuPanelView.swift")
+        XCTAssertTrue(source.contains("DoubleBezel"), "Menu panel must use DoubleBezel chrome")
     }
 
     // MARK: - Anti-slop (UI-SPEC §5)
