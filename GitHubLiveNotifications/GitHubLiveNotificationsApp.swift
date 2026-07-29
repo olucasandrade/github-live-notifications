@@ -28,8 +28,7 @@ struct GitHubLiveNotificationsApp: App {
         .defaultPosition(.center)
 
         Settings {
-            Text("Settings")
-                .padding()
+            SettingsView(auth: auth)
         }
     }
 

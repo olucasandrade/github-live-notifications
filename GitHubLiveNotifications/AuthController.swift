@@ -61,6 +61,13 @@ final class AuthController: ObservableObject {
         }
     }
 
+    /// Clears session state and removes the stored PAT.
+    func signOut() async {
+        login = nil
+        validationState = .idle
+        try? patStore.delete()
+    }
+
     private static func liveValidate(_ token: String) async throws -> GitHubUser {
         let client = GitHubClient(token: token)
         let result = try await client.fetchUser()
