@@ -36,3 +36,4 @@ Exit 0 means done. CI runs the same script on every PR — passing locally past 
 - Never log PATs, `Authorization` headers, or notification bodies. Redact `ghp_` / `gho_` / `github_pat_` in debug export.
 - Bundle ID: `com.lucasandrade.GitHubLiveNotifications`. Keychain service: `com.lucasandrade.GitHubLiveNotifications.pat`.
 - Local machines may lack Xcode.app; `scripts/xcode-check.sh` skips `xcodebuild` locally but CI on `macos-14` must run it once the `.xcodeproj` exists.
+- **CI Xcode pin:** GitHub Actions uses `macos-14` with **Xcode 15.4** (`/Applications/Xcode_15.4.app`, selected via `xcode-select` in `.github/workflows/ci.yml` before `scripts/check.sh`).

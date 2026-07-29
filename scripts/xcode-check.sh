@@ -17,6 +17,9 @@ if [[ -d GitHubLiveNotifications.xcodeproj ]]; then
       -destination 'platform=macOS' \
       -quiet \
       test
+  elif [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+    echo "error: Xcode.app required in CI but xcodebuild is unavailable" >&2
+    exit 1
   else
     echo "warning: Xcode.app not available locally; skipping app build (CI will run it)"
   fi
