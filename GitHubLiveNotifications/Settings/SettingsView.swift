@@ -1,3 +1,4 @@
+import AppKit
 import GHNCore
 import SwiftUI
 
@@ -6,12 +7,12 @@ struct SettingsView: View {
     @ObservedObject var auth: AuthController
     @ObservedObject var bannerSettings: BannerSettingsStore
     @ObservedObject var notificationAuth: NotificationAuthorizationController
+    @ObservedObject var launchAtLogin: LaunchAtLoginController
     @StateObject private var repoSelection = RepoSelectionController.live(selfLogin: nil)
     @Environment(\.openWindow) private var openWindow
 
     @State private var includeBots = false
     @State private var includeDraftPRs = false
-    @State private var launchAtLogin = false
     @State private var enabledReasons = Set(NotificationReason.allCases)
 
     private static let releasesURL = URL(
@@ -183,15 +184,28 @@ struct SettingsView: View {
 
     @ViewBuilder
     private var generalSection: some View {
-        Toggle("Launch at Login", isOn: $launchAtLogin)
+        Toggle("Launch at Login", isOn: $launchAtLogin.isEnabled)
             .font(GHNFont.rowTitle)
-        Button("Export debug log…") {}
-            .font(GHNFont.rowTitle)
+        Button("Export debug log…") {
+            exportDebugLog()
+        }
+        .font(GHNFont.rowTitle)
+    }
+
+    private func exportDebugLog() {
+        let panel = NSSavePanel()
+        panel.nameFieldStringValue = "github-live-notifications-debug.log"
+        panel.canCreateDirectories = true
+        panel.begin { response in
+            guard response == .OK, let url = panel.url else { return }
+            let text = DebugLog.shared.exportRedacted()
+            try? text.write(to: url, atomically: true, encoding: .utf8)
+        }
     }
 
     @ViewBuilder
     private var aboutSection: some View {
-        Text("Version 1.0.0-dev")
+        Text("Version \(GHNCoreInfo.version)")
             .font(GHNFont.mono)
             .foregroundStyle(GHNColor.textSecondary)
         Link("GitHub Releases", destination: Self.releasesURL)

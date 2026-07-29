@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1000000000000000000007F /* LaunchAtLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000007E /* LaunchAtLoginController.swift */; };
 		A10000000000000000000079 /* BannerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000078 /* BannerSettings.swift */; };
 		A1000000000000000000007B /* NotificationAuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000007A /* NotificationAuthorizationController.swift */; };
 		A1000000000000000000007D /* BannerTogglesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000007C /* BannerTogglesTests.swift */; };
@@ -58,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A1000000000000000000007E /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
 		A10000000000000000000078 /* BannerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSettings.swift; sourceTree = "<group>"; };
 		A1000000000000000000007A /* NotificationAuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationAuthorizationController.swift; path = Notifications/NotificationAuthorizationController.swift; sourceTree = "<group>"; };
 		A1000000000000000000007C /* BannerTogglesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTogglesTests.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				A10000000000000000000070 /* InboxController.swift */,
 				A10000000000000000000072 /* InboxItemThreadBridge.swift */,
 				A10000000000000000000050 /* AuthController.swift */,
+				A1000000000000000000007E /* LaunchAtLoginController.swift */,
 				A1000000000000000000007A /* NotificationAuthorizationController.swift */,
 				A10000000000000000000052 /* PATSetupSheet.swift */,
 				A10000000000000000000046 /* Panel */,
@@ -356,6 +359,7 @@
 				A10000000000000000000063 /* InboxListView.swift in Sources */,
 				A10000000000000000000061 /* InboxEmptyState.swift in Sources */,
 				A10000000000000000000051 /* AuthController.swift in Sources */,
+				A1000000000000000000007F /* LaunchAtLoginController.swift in Sources */,
 				A10000000000000000000079 /* BannerSettings.swift in Sources */,
 				A1000000000000000000007B /* NotificationAuthorizationController.swift in Sources */,
 				A10000000000000000000053 /* PATSetupSheet.swift in Sources */,
