@@ -3,6 +3,7 @@ import SwiftUI
 
 @main
 struct GitHubLiveNotificationsApp: App {
+    @State private var inboxItems: [InboxItem] = []
     @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
     @State private var isPolling = false
     @State private var refreshBlocked = false
@@ -10,6 +11,8 @@ struct GitHubLiveNotificationsApp: App {
     var body: some Scene {
         MenuBarExtra("GitHub Live Notifications", systemImage: "bell.fill") {
             MenuPanelView(
+                items: inboxItems,
+                isUnread: { _ in true },
                 status: panelStatus,
                 isPolling: isPolling,
                 refreshBlocked: refreshBlocked,

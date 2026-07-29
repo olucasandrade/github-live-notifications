@@ -1,7 +1,10 @@
+import GHNCore
 import SwiftUI
 
-/// MenuBarExtra `.window` panel shell (UI-SPEC §2). Section lists land in T4.3.
+/// MenuBarExtra `.window` panel shell (UI-SPEC §2).
 struct MenuPanelView: View {
+    var items: [InboxItem]
+    var isUnread: (InboxItem) -> Bool
     var status: PanelStatus
     var isPolling: Bool
     var refreshBlocked: Bool
@@ -20,8 +23,7 @@ struct MenuPanelView: View {
                 }
 
                 ScrollView {
-                    panelBodyPlaceholder
-                        .frame(maxWidth: .infinity)
+                    InboxListView(items: items, isUnread: isUnread)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 16)
                 }
@@ -34,28 +36,13 @@ struct MenuPanelView: View {
         .frame(minHeight: 280, maxHeight: 520)
         .panelMotion()
     }
-
-    private var panelBodyPlaceholder: some View {
-        VStack(spacing: 8) {
-            Image(systemName: "bell.slash")
-                .font(.system(size: 28, weight: .regular))
-                .foregroundStyle(GHNColor.textSecondary)
-            Text("You're caught up")
-                .font(GHNFont.emptyHeadline)
-                .foregroundStyle(GHNColor.textPrimary)
-            Text("New signals will land here when something needs you.")
-                .font(GHNFont.meta)
-                .foregroundStyle(GHNColor.textSecondary)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 24)
-    }
 }
 
 #if DEBUG
-#Preview("Fresh") {
+#Preview("Empty") {
     MenuPanelView(
+        items: [],
+        isUnread: { _ in false },
         status: .fresh(lastUpdated: Date().addingTimeInterval(-180)),
         isPolling: true,
         refreshBlocked: false,
@@ -65,8 +52,40 @@ struct MenuPanelView: View {
     .background(GHNColor.surfaceCanvas)
 }
 
+#Preview("With items") {
+    MenuPanelView(
+        items: [
+            InboxItem(
+                id: "1",
+                title: "Fix notification polling jitter",
+                repoFullName: "owner/repo",
+                url: nil,
+                source: .thread(reason: .mention),
+                updatedAt: Date().addingTimeInterval(-120)
+            ),
+            InboxItem(
+                id: "2",
+                title: "Add sectioned inbox list",
+                repoFullName: "owner/app",
+                url: nil,
+                source: .thread(reason: .reviewRequested),
+                updatedAt: Date().addingTimeInterval(-3600)
+            ),
+        ],
+        isUnread: { $0.id == "1" },
+        status: .fresh(lastUpdated: Date().addingTimeInterval(-180)),
+        isPolling: false,
+        refreshBlocked: false,
+        onRefresh: {}
+    )
+    .padding(16)
+    .background(GHNColor.surfaceCanvas)
+}
+
 #Preview("Stale") {
     MenuPanelView(
+        items: [],
+        isUnread: { _ in false },
         status: .stale(lastUpdated: Date().addingTimeInterval(-1380)),
         isPolling: false,
         refreshBlocked: false,
@@ -78,6 +97,8 @@ struct MenuPanelView: View {
 
 #Preview("Rate limited") {
     MenuPanelView(
+        items: [],
+        isUnread: { _ in false },
         status: .rateLimited(resumesAt: Date().addingTimeInterval(3600)),
         isPolling: false,
         refreshBlocked: true,
