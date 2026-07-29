@@ -1,22 +1,51 @@
 import GHNCore
 import SwiftUI
 
-/// Menu-bar shell (T3.1). Full inbox UI lands in M4; this is a placeholder
-/// proving the app target links GHNCore and builds sandboxed + LSUIElement.
 @main
 struct GitHubLiveNotificationsApp: App {
+    @StateObject private var auth = AuthController()
+
     var body: some Scene {
         MenuBarExtra("GitHub Live Notifications", systemImage: "bell.badge") {
-            VStack(spacing: 8) {
-                Text("GitHub Live Notifications")
-                    .font(.headline)
+            MenuBarPanel(auth: auth)
+        }
+        .menuBarExtraStyle(.window)
+
+        Window("GitHub Live Notifications", id: "pat-setup") {
+            PATSetupSheet(auth: auth)
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
+        .defaultPosition(.center)
+    }
+}
+
+/// Menu-bar panel placeholder until M4 inbox UI lands.
+private struct MenuBarPanel: View {
+    @ObservedObject var auth: AuthController
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some View {
+        VStack(spacing: 8) {
+            Text("GitHub Live Notifications")
+                .font(.headline)
+            if let login = auth.login {
+                Text("Signed in as \(login)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
                 Text("Core v\(GHNCoreInfo.version)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            .padding()
-            .frame(width: 260)
         }
-        .menuBarExtraStyle(.window)
+        .padding()
+        .frame(width: 260)
+        .task {
+            await auth.restoreSessionIfNeeded()
+            if !auth.isAuthenticated {
+                openWindow(id: "pat-setup")
+            }
+        }
     }
 }
