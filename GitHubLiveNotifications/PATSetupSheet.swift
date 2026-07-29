@@ -3,7 +3,6 @@ import SwiftUI
 /// First-launch PAT entry sheet (UI-SPEC §3.2).
 struct PATSetupSheet: View {
     @ObservedObject var auth: AuthController
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
 
     @State private var token = ""
@@ -74,7 +73,7 @@ struct PATSetupSheet: View {
             .frame(minWidth: 100)
         }
         .buttonStyle(.borderedProminent)
-        .tint(DesignTokens.accentSignal(for: colorScheme))
+        .tint(GHNColor.accentSignal)
         .disabled(token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             || auth.validationState == .validating)
     }

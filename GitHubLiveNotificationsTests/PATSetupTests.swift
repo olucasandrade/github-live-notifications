@@ -30,13 +30,39 @@ final class PATSetupTests: XCTestCase {
     }
 
     func testDesignTokensUseSignalGreenNotPurple() throws {
-        let source = try String(
-            contentsOf: repoRoot.appendingPathComponent("GitHubLiveNotifications/DesignTokens.swift"),
+        let assetURL = repoRoot
+            .appendingPathComponent("GitHubLiveNotifications/Assets.xcassets/accent.signal.colorset/Contents.json")
+        let json = try JSONSerialization.jsonObject(with: Data(contentsOf: assetURL)) as? [String: Any]
+        let colors = try XCTUnwrap(json?["colors"] as? [[String: Any]])
+        let lightComponents = try colorComponents(from: colors[0])
+        let darkComponents = try colorComponents(from: colors[1])
+        XCTAssertEqual(lightComponents.red, 26, accuracy: 1, "Light accent must be signal green #1A7F37")
+        XCTAssertEqual(lightComponents.green, 127, accuracy: 1)
+        XCTAssertEqual(lightComponents.blue, 55, accuracy: 1)
+        XCTAssertEqual(darkComponents.red, 63, accuracy: 1, "Dark accent must be signal green #3FB950")
+        XCTAssertEqual(darkComponents.green, 185, accuracy: 1)
+        XCTAssertEqual(darkComponents.blue, 80, accuracy: 1)
+
+        let tokensSource = try String(
+            contentsOf: repoRoot.appendingPathComponent("GitHubLiveNotifications/Design/DesignTokens.swift"),
             encoding: .utf8
         )
-        XCTAssertTrue(source.contains("1A7F37"), "Light accent must be signal green #1A7F37")
-        XCTAssertTrue(source.contains("3FB950"), "Dark accent must be signal green #3FB950")
-        XCTAssertFalse(source.contains("purple"), "Purple accents are banned by UI-SPEC")
+        XCTAssertFalse(tokensSource.contains("purple"), "Purple accents are banned by UI-SPEC")
+    }
+
+    private struct RGB8 {
+        let red: Double
+        let green: Double
+        let blue: Double
+    }
+
+    private func colorComponents(from entry: [String: Any]) throws -> RGB8 {
+        let color = try XCTUnwrap(entry["color"] as? [String: Any])
+        let components = try XCTUnwrap(color["components"] as? [String: String])
+        let red = Double(components["red"] ?? "") ?? 0
+        let green = Double(components["green"] ?? "") ?? 0
+        let blue = Double(components["blue"] ?? "") ?? 0
+        return RGB8(red: red * 255, green: green * 255, blue: blue * 255)
     }
 
     // MARK: - Validation behavior
