@@ -66,7 +66,7 @@ final class DiffEngineTests: XCTestCase {
     }
 
     func testSecondThreadFetchEmitsOnlyNewThreads() {
-        engine.diffThreads([thread(id: "t1"), thread(id: "t2")])
+        _ = engine.diffThreads([thread(id: "t1"), thread(id: "t2")])
 
         let emitted = engine.diffThreads([thread(id: "t1"), thread(id: "t2"), thread(id: "t3")])
         XCTAssertEqual(emitted.map(\.id), ["t3"])
@@ -74,7 +74,7 @@ final class DiffEngineTests: XCTestCase {
     }
 
     func testKnownThreadsAreNotReEmitted() {
-        engine.diffThreads([thread(id: "t1")])
+        _ = engine.diffThreads([thread(id: "t1")])
 
         XCTAssertTrue(engine.diffThreads([thread(id: "t1")]).isEmpty)
     }
@@ -97,7 +97,7 @@ final class DiffEngineTests: XCTestCase {
     }
 
     func testSecondRepoItemFetchEmitsOnlyNewIDs() {
-        engine.diffRepoItems([repoItem(id: "1"), repoItem(id: "2")], forRepo: repo)
+        _ = engine.diffRepoItems([repoItem(id: "1"), repoItem(id: "2")], forRepo: repo)
 
         let emitted = engine.diffRepoItems(
             [repoItem(id: "1"), repoItem(id: "2"), repoItem(id: "3")],
@@ -108,7 +108,7 @@ final class DiffEngineTests: XCTestCase {
 
     func testRepoItemBaselinesAreScopedPerRepo() {
         let other = MonitoredRepo(owner: "octocat", name: "world")
-        engine.diffRepoItems([repoItem(id: "1")], forRepo: repo)
+        _ = engine.diffRepoItems([repoItem(id: "1")], forRepo: repo)
 
         XCTAssertEqual(engine.diffRepoItems([repoItem(id: "9")], forRepo: other), [])
         XCTAssertTrue(cache.itemsBaselined(forRepo: other))
@@ -122,7 +122,7 @@ final class DiffEngineTests: XCTestCase {
     }
 
     func testPositiveStarDeltaEmitsSyntheticItem() {
-        engine.diffStarCount(100, forRepo: repo, now: now)
+        _ = engine.diffStarCount(100, forRepo: repo, now: now)
 
         let item = engine.diffStarCount(112, forRepo: repo, now: now)
         XCTAssertNotNil(item)
@@ -134,21 +134,21 @@ final class DiffEngineTests: XCTestCase {
     }
 
     func testStarDecreaseUpdatesCacheSilently() {
-        engine.diffStarCount(100, forRepo: repo, now: now)
+        _ = engine.diffStarCount(100, forRepo: repo, now: now)
 
         XCTAssertNil(engine.diffStarCount(95, forRepo: repo, now: now))
         XCTAssertEqual(cache.starCount(forRepo: repo), 95)
     }
 
     func testUnchangedStarCountIsSilent() {
-        engine.diffStarCount(50, forRepo: repo, now: now)
+        _ = engine.diffStarCount(50, forRepo: repo, now: now)
         XCTAssertNil(engine.diffStarCount(50, forRepo: repo, now: now))
         XCTAssertEqual(cache.starCount(forRepo: repo), 50)
     }
 
     func testStarIncreaseAfterDecreaseUsesCurrentBaseline() {
-        engine.diffStarCount(100, forRepo: repo, now: now)
-        engine.diffStarCount(90, forRepo: repo, now: now)
+        _ = engine.diffStarCount(100, forRepo: repo, now: now)
+        _ = engine.diffStarCount(90, forRepo: repo, now: now)
 
         let item = engine.diffStarCount(95, forRepo: repo, now: now)
         XCTAssertEqual(item?.title, "octocat/hello: +5 stars")
