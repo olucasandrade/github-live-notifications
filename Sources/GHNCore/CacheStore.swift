@@ -41,6 +41,16 @@ public protocol CacheStore: AnyObject {
     func wipeRepo(_ repo: MonitoredRepo)
     /// Wipes the entire cache — sign-out.
     func wipeAll()
+
+    /// Thread IDs marked read locally after PATCH or mark-all (T2.4).
+    func isThreadRead(_ id: String) -> Bool
+    func markThreadRead(_ id: String)
+    func markAllThreadsRead(_ ids: [String])
+
+    /// Synthetic inbox item IDs dismissed locally (T2.4).
+    func isSyntheticDismissed(_ id: String) -> Bool
+    func dismissSynthetic(_ id: String)
+    func dismissAllSynthetics(_ ids: [String])
 }
 
 /// UserDefaults-backed `CacheStore`. All keys live under the `cache.` prefix.
@@ -66,6 +76,8 @@ public final class UserDefaultsCacheStore: CacheStore {
         static func itemsBaselined(_ repo: MonitoredRepo) -> String { prefix + "itemsBaselined." + repo.fullName }
         static func starCount(_ repo: MonitoredRepo) -> String { prefix + "starCount." + repo.fullName }
         static func etag(_ key: String) -> String { prefix + "etag." + key }
+        static let readThreadIDs = prefix + "readThreadIDs"
+        static let dismissedSyntheticIDs = prefix + "dismissedSyntheticIDs"
     }
 
     // MARK: Thread IDs
@@ -126,6 +138,66 @@ public final class UserDefaultsCacheStore: CacheStore {
 
     public func markItemsBaselined(forRepo repo: MonitoredRepo) {
         defaults.set(true, forKey: Key.itemsBaselined(repo))
+    }
+
+    // MARK: Read / dismissed state (T2.4)
+
+    public func isThreadRead(_ id: String) -> Bool {
+        readThreadIDSet.contains(id)
+    }
+
+    public func markThreadRead(_ id: String) {
+        var ids = readThreadIDs
+        if !ids.contains(id) {
+            ids.append(id)
+            defaults.set(ids, forKey: Key.readThreadIDs)
+        }
+    }
+
+    public func markAllThreadsRead(_ ids: [String]) {
+        var existing = readThreadIDs
+        var seen = Set(existing)
+        for id in ids where seen.insert(id).inserted {
+            existing.append(id)
+        }
+        defaults.set(existing, forKey: Key.readThreadIDs)
+    }
+
+    public func isSyntheticDismissed(_ id: String) -> Bool {
+        dismissedSyntheticIDSet.contains(id)
+    }
+
+    public func dismissSynthetic(_ id: String) {
+        var ids = dismissedSyntheticIDs
+        if !ids.contains(id) {
+            ids.append(id)
+            defaults.set(ids, forKey: Key.dismissedSyntheticIDs)
+        }
+    }
+
+    public func dismissAllSynthetics(_ ids: [String]) {
+        var existing = dismissedSyntheticIDs
+        var seen = Set(existing)
+        for id in ids where seen.insert(id).inserted {
+            existing.append(id)
+        }
+        defaults.set(existing, forKey: Key.dismissedSyntheticIDs)
+    }
+
+    private var readThreadIDs: [String] {
+        defaults.stringArray(forKey: Key.readThreadIDs) ?? []
+    }
+
+    private var readThreadIDSet: Set<String> {
+        Set(readThreadIDs)
+    }
+
+    private var dismissedSyntheticIDs: [String] {
+        defaults.stringArray(forKey: Key.dismissedSyntheticIDs) ?? []
+    }
+
+    private var dismissedSyntheticIDSet: Set<String> {
+        Set(dismissedSyntheticIDs)
     }
 
     // MARK: Wipe
