@@ -115,6 +115,58 @@ final class GitHubClientTests: XCTestCase {
 
     // MARK: - Errors
 
+    func test401MapsToInvalidToken() async {
+        let (client, _) = makeClient { request in
+            (Self.httpResponse(url: request.url!, status: 401), Data())
+        }
+
+        do {
+            _ = try await client.get("/user", as: TestPayload.self)
+            XCTFail("expected throw")
+        } catch let error as GitHubClientError {
+            XCTAssertEqual(error, .invalidToken)
+        } catch {
+            XCTFail("expected GitHubClientError.invalidToken, got \(error)")
+        }
+    }
+
+    func test403WithoutRateLimitExhaustionMapsToInvalidToken() async {
+        let (client, _) = makeClient { request in
+            (Self.httpResponse(url: request.url!, status: 403), Data())
+        }
+
+        do {
+            _ = try await client.get("/user", as: TestPayload.self)
+            XCTFail("expected throw")
+        } catch let error as GitHubClientError {
+            XCTAssertEqual(error, .invalidToken)
+        } catch {
+            XCTFail("expected GitHubClientError.invalidToken, got \(error)")
+        }
+    }
+
+    func test403WithRateLimitRemainingZeroMapsToRateLimited() async {
+        let resetEpoch: TimeInterval = 1_700_000_000
+        let (client, _) = makeClient { request in
+            (
+                Self.httpResponse(url: request.url!, status: 403, headers: [
+                    "X-RateLimit-Remaining": "0",
+                    "X-RateLimit-Reset": "1700000000",
+                ]),
+                Data()
+            )
+        }
+
+        do {
+            _ = try await client.get("/user", as: TestPayload.self)
+            XCTFail("expected throw")
+        } catch let error as GitHubClientError {
+            XCTAssertEqual(error, .rateLimited(reset: Date(timeIntervalSince1970: resetEpoch)))
+        } catch {
+            XCTFail("expected GitHubClientError.rateLimited, got \(error)")
+        }
+    }
+
     func testHTTPErrorStatusThrows() async {
         let (client, _) = makeClient { request in
             (Self.httpResponse(url: request.url!, status: 500), Data())
