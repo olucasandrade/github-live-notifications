@@ -46,12 +46,14 @@ final class GitHubLiveNotificationsTests: XCTestCase {
         )
     }
 
-    func testAppSourceUsesMenuBarExtraPlaceholder() throws {
+    func testAppSourceUsesMenuBarExtraAndPATSetup() throws {
         let source = try String(
             contentsOf: repoRoot.appendingPathComponent("GitHubLiveNotifications/GitHubLiveNotificationsApp.swift"),
             encoding: .utf8
         )
-        XCTAssertTrue(source.contains("MenuBarExtra"), "App shell must expose a MenuBarExtra placeholder")
+        XCTAssertTrue(source.contains("MenuBarExtra"), "App shell must expose a MenuBarExtra")
         XCTAssertTrue(source.contains(".menuBarExtraStyle(.window)"))
+        XCTAssertTrue(source.contains("PATSetupSheet"), "First launch must present PAT setup sheet")
+        XCTAssertTrue(source.contains("pat-setup"), "PAT setup window id required for first launch")
     }
 }

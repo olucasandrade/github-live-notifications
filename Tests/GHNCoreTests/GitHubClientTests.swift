@@ -13,6 +13,25 @@ final class GitHubClientTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Authorization
+
+    func testGetSendsBearerTokenWhenConfigured() async throws {
+        let (client, _) = makeClient { request in
+            (
+                Self.httpResponse(url: request.url!, status: 200),
+                Data(#"{"login":"octocat"}"#.utf8)
+            )
+        }
+        client.token = "ghp_test_token"
+
+        _ = try await client.get("/user", as: TestPayload.self)
+
+        XCTAssertEqual(
+            StubURLProtocol.observedRequests.last?.value(forHTTPHeaderField: "Authorization"),
+            "Bearer ghp_test_token"
+        )
+    }
+
     // MARK: - Success path
 
     func testGetDecodesBodyAndExposesETagAndPollInterval() async throws {
