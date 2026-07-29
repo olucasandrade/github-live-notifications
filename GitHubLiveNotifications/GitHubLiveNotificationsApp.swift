@@ -5,6 +5,7 @@ import SwiftUI
 struct GitHubLiveNotificationsApp: App {
     @StateObject private var notificationAuth = NotificationAuthorizationController()
     @StateObject private var bannerSettings = BannerSettingsStore()
+    @StateObject private var launchAtLogin = LaunchAtLoginController()
     @StateObject private var auth: AuthController
     @StateObject private var inbox = InboxController()
     @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
@@ -45,7 +46,8 @@ struct GitHubLiveNotificationsApp: App {
             SettingsView(
                 auth: auth,
                 bannerSettings: bannerSettings,
-                notificationAuth: notificationAuth
+                notificationAuth: notificationAuth,
+                launchAtLogin: launchAtLogin
             )
         }
     }

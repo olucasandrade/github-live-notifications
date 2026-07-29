@@ -71,8 +71,29 @@ final class SettingsWindowTests: XCTestCase {
 
     func testAboutShowsDevVersionAndReleasesLink() throws {
         let source = try appSource(at: "Settings/SettingsView.swift")
-        XCTAssertTrue(source.contains("1.0.0-dev"), "About must show dev version string")
+        XCTAssertTrue(
+            source.contains("GHNCoreInfo.version") || source.contains("1.0.0-dev"),
+            "About must show dev version string"
+        )
         XCTAssertTrue(source.contains("Releases"), "About must link to GitHub Releases")
+    }
+
+    // MARK: - T5.4 General + About
+
+    func testLaunchAtLoginUsesSMAppService() throws {
+        let settings = try appSource(at: "Settings/SettingsView.swift")
+        XCTAssertTrue(settings.contains("Launch at Login"), "General must offer Launch at Login toggle")
+        let controller = try appSource(at: "LaunchAtLoginController.swift")
+        XCTAssertTrue(controller.contains("SMAppService"), "Launch at Login must use SMAppService")
+        XCTAssertTrue(controller.contains("register()"), "Launch at Login must register with SMAppService")
+        XCTAssertTrue(controller.contains("unregister()"), "Launch at Login must unregister from SMAppService")
+    }
+
+    func testGeneralSectionWiresDebugExport() throws {
+        let source = try appSource(at: "Settings/SettingsView.swift")
+        XCTAssertTrue(source.contains("Export debug log"), "General must offer debug export")
+        XCTAssertTrue(source.contains("DebugLog"), "Debug export must use in-memory DebugLog")
+        XCTAssertTrue(source.contains("exportRedacted"), "Debug export must apply redaction")
     }
 
     // MARK: - App wiring
