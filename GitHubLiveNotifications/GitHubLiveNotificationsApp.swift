@@ -3,11 +3,21 @@ import SwiftUI
 
 @main
 struct GitHubLiveNotificationsApp: App {
-    @StateObject private var auth = AuthController()
+    @StateObject private var notificationAuth = NotificationAuthorizationController()
+    @StateObject private var bannerSettings = BannerSettingsStore()
+    @StateObject private var auth: AuthController
     @StateObject private var inbox = InboxController()
     @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
     @State private var isPolling = false
     @State private var refreshBlocked = false
+
+    init() {
+        let notificationAuth = NotificationAuthorizationController()
+        _notificationAuth = StateObject(wrappedValue: notificationAuth)
+        _auth = StateObject(
+            wrappedValue: AuthController(notificationAuth: notificationAuth)
+        )
+    }
 
     var body: some Scene {
         MenuBarExtra {
@@ -32,7 +42,11 @@ struct GitHubLiveNotificationsApp: App {
         .defaultPosition(.center)
 
         Settings {
-            SettingsView(auth: auth)
+            SettingsView(
+                auth: auth,
+                bannerSettings: bannerSettings,
+                notificationAuth: notificationAuth
+            )
         }
     }
 
