@@ -2,7 +2,7 @@ import Foundation
 
 /// GitHub notification thread reasons (`reason` field of the notifications API).
 /// Full set, each toggleable — raw values match the API strings.
-public enum NotificationReason: String, Codable, CaseIterable, Equatable {
+public enum NotificationReason: String, Codable, CaseIterable, Equatable, Sendable {
     case assign
     case author
     case ciActivity = "ci_activity"
