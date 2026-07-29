@@ -80,4 +80,65 @@ final class MenuPanelTests: XCTestCase {
         XCTAssertTrue(source.contains("MenuPanelView"), "App must render MenuPanelView")
         XCTAssertTrue(source.contains(".menuBarExtraStyle(.window)"))
     }
+
+    // MARK: - Sectioned inbox list (UI-SPEC §2.2, T4.3)
+
+    func testInboxListDefinesFiveSectionsInPlanOrder() throws {
+        let source = try appSource(at: "Panel/InboxSection+Display.swift")
+        for title in [
+            "My work",
+            "Activity",
+            "CI & security",
+            "New on my repos",
+            "Stars",
+        ] {
+            XCTAssertTrue(source.contains(title), "Missing section title \"\(title)\"")
+        }
+        XCTAssertTrue(source.contains("InboxSection.allCases"), "Sections must follow InboxSection order")
+    }
+
+    func testInboxListHidesEmptySections() throws {
+        let source = try appSource(at: "Panel/InboxListLayout.swift")
+        XCTAssertTrue(source.contains("isEmpty"), "Empty sections must be hidden")
+    }
+
+    func testInboxListCapsAtTwentyRowsWithMoreFooter() throws {
+        let layoutSource = try appSource(at: "Panel/InboxListLayout.swift")
+        XCTAssertTrue(layoutSource.contains("20"), "Inbox must cap visible rows at 20")
+        let listSource = try appSource(at: "Components/InboxListView.swift")
+        XCTAssertTrue(listSource.contains("more on GitHub"), "Overflow footer must link to GitHub")
+    }
+
+    func testInboxRowUsesUISpecAnatomy() throws {
+        let source = try appSource(at: "Components/InboxRowView.swift")
+        XCTAssertTrue(source.contains("GHNFont.rowTitle"), "Row title uses UI-SPEC row font")
+        XCTAssertTrue(source.contains("GHNFont.meta"), "Meta line uses UI-SPEC meta font")
+        XCTAssertTrue(source.contains("GHNFont.mono"), "Relative time uses SF Mono")
+        XCTAssertTrue(source.contains("accentSignal"), "Unread pip uses accent color")
+        XCTAssertTrue(source.contains("repoFullName"), "Meta includes repo full name")
+    }
+
+    func testInboxSectionHeaderUsesMonoCount() throws {
+        let source = try appSource(at: "Components/InboxSectionHeader.swift")
+        XCTAssertTrue(source.contains("GHNFont.panelTitle"), "Section title uses panel title font")
+        XCTAssertTrue(source.contains("GHNFont.mono"), "Section count uses SF Mono")
+    }
+
+    func testInboxEmptyStateShowsCaughtUp() throws {
+        let source = try appSource(at: "Components/InboxEmptyState.swift")
+        XCTAssertTrue(source.contains("bell.slash"), "Empty state uses bell.slash symbol")
+        XCTAssertTrue(source.contains("You're caught up"), "Empty state headline required")
+        XCTAssertTrue(
+            source.contains("New signals will land here when something needs you."),
+            "Empty state subcopy required"
+        )
+    }
+
+    func testMenuPanelBindsInboxItems() throws {
+        let panelSource = try appSource(at: "Panel/MenuPanelView.swift")
+        XCTAssertTrue(panelSource.contains("InboxListView"), "Panel body must render InboxListView")
+        XCTAssertTrue(panelSource.contains("items:"), "MenuPanelView must accept inbox items")
+        let appSource = try appSource(at: "GitHubLiveNotificationsApp.swift")
+        XCTAssertTrue(appSource.contains("inboxItems"), "App must hold inbox items state")
+    }
 }

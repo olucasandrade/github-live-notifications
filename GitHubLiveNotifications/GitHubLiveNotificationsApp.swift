@@ -4,6 +4,7 @@ import SwiftUI
 @main
 struct GitHubLiveNotificationsApp: App {
     @StateObject private var auth = AuthController()
+    @State private var inboxItems: [InboxItem] = []
     @State private var panelStatus: PanelStatus = .fresh(lastUpdated: Date())
     @State private var isPolling = false
     @State private var refreshBlocked = false
@@ -12,6 +13,7 @@ struct GitHubLiveNotificationsApp: App {
         MenuBarExtra("GitHub Live Notifications", systemImage: "bell.fill") {
             RootMenuPanel(
                 auth: auth,
+                items: $inboxItems,
                 status: $panelStatus,
                 isPolling: $isPolling,
                 refreshBlocked: $refreshBlocked,
@@ -47,6 +49,7 @@ struct GitHubLiveNotificationsApp: App {
 /// Hosts the menu panel and opens the PAT sheet on first launch when needed.
 private struct RootMenuPanel: View {
     @ObservedObject var auth: AuthController
+    @Binding var items: [InboxItem]
     @Binding var status: PanelStatus
     @Binding var isPolling: Bool
     @Binding var refreshBlocked: Bool
@@ -55,6 +58,8 @@ private struct RootMenuPanel: View {
 
     var body: some View {
         MenuPanelView(
+            items: items,
+            isUnread: { _ in true },
             status: status,
             isPolling: isPolling,
             refreshBlocked: refreshBlocked,
