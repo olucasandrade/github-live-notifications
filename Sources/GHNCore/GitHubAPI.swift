@@ -5,6 +5,11 @@ import Foundation
 public struct GitHubUser: Decodable, Equatable, Sendable {
     public let login: String
     public let id: Int
+
+    public init(login: String, id: Int) {
+        self.login = login
+        self.id = id
+    }
 }
 
 public struct NotificationThread: Decodable, Equatable, Sendable {

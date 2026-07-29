@@ -27,13 +27,30 @@ public final class GitHubClient: @unchecked Sendable {
     private let session: URLSession
     private let lock = NSLock()
     private var etags: [URL: String] = [:]
+    private var _token: String?
+
+    /// Classic PAT sent as `Authorization: Bearer` on every request when set.
+    public var token: String? {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _token
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _token = newValue
+        }
+    }
 
     public init(
         baseURL: URL = URL(string: "https://api.github.com")!,
-        session: URLSession = .shared
+        session: URLSession = .shared,
+        token: String? = nil
     ) {
         self.baseURL = baseURL
         self.session = session
+        self._token = token
     }
 
     /// GET `baseURL + path`, revalidating with a stored ETag when one exists.
@@ -42,16 +59,7 @@ public final class GitHubClient: @unchecked Sendable {
             throw GitHubClientError.invalidURL(path)
         }
 
-        var request = URLRequest(url: url)
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        if let etag = storedETag(for: url) {
-            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
-        }
-
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw GitHubClientError.unexpectedResponse
-        }
+        let (data, http) = try await performAuthenticatedGet(url: url)
 
         let pollInterval = http.value(forHTTPHeaderField: "X-Poll-Interval").flatMap(TimeInterval.init)
 
@@ -115,8 +123,15 @@ public final class GitHubClient: @unchecked Sendable {
     }
 
     func performGetURL(_ url: URL) async throws -> (Data, HTTPURLResponse) {
+        try await performAuthenticatedGet(url: url)
+    }
+
+    private func performAuthenticatedGet(url: URL) async throws -> (Data, HTTPURLResponse) {
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        if let token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         if let etag = storedETag(for: url) {
             request.setValue(etag, forHTTPHeaderField: "If-None-Match")
         }
