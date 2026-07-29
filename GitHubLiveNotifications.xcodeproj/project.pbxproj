@@ -21,6 +21,7 @@
 		A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */; };
 		A1000000000000000000002B /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000002A /* DesignSystemTests.swift */; };
 		A10000000000000000000040 /* MenuPanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003F /* MenuPanelTests.swift */; };
+		A10000000000000000000050 /* InboxListLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004F /* InboxListLayoutTests.swift */; };
 		A10000000000000000000018 /* GHNCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000026 /* GHNCore */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubLiveNotificationsTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000002A /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
 		A1000000000000000000003F /* MenuPanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelTests.swift; sourceTree = "<group>"; };
+		A1000000000000000000004F /* InboxListLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxListLayoutTests.swift; sourceTree = "<group>"; };
 		A10000000000000000000037 /* PanelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelStatus.swift; sourceTree = "<group>"; };
 		A10000000000000000000038 /* MenuPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPanelView.swift; sourceTree = "<group>"; };
 		A10000000000000000000039 /* PanelMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelMotion.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				A1000000000000000000001A /* GitHubLiveNotificationsTests.swift */,
 				A1000000000000000000002A /* DesignSystemTests.swift */,
 				A1000000000000000000003F /* MenuPanelTests.swift */,
+				A1000000000000000000004F /* InboxListLayoutTests.swift */,
 			);
 			path = GitHubLiveNotificationsTests;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				A10000000000000000000017 /* GitHubLiveNotificationsTests.swift in Sources */,
 				A1000000000000000000002B /* DesignSystemTests.swift in Sources */,
 				A10000000000000000000040 /* MenuPanelTests.swift in Sources */,
+				A10000000000000000000050 /* InboxListLayoutTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
